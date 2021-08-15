@@ -6,7 +6,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="page-container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -19,3 +19,9 @@ export default defineComponent({
   name: 'MainLayout',
 });
 </script>
+
+<style lang="scss" scoped>
+.page-container {
+  background-color: $background;
+}
+</style>
