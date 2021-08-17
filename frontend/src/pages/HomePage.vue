@@ -1,7 +1,9 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <div class="col-9 text-center">bla</div>
-    <last-used-question-databases />
+    <div class="col-9 text-center">
+      <q-btn color="primary" label="Login" to="/login" />
+    </div>
+    <last-used-bases />
   </q-page>
 </template>
 
