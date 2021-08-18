@@ -1,7 +1,9 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { get, isNil } from 'lodash';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { isNil } from 'lodash';
 import { Notify } from 'quasar';
-import { useStore } from '../../store';
+import api from '.';
+import store from '../../store';
+import { refreshTokenFromGoogleURL } from './apiResources/auth';
 
 const baseURL =
   (process.env.VUE_APP_SSL === 'true' ? 'https' : 'http') +
@@ -13,8 +15,8 @@ const axiosInstance = axios.create({
 });
 
 const addToken = (config: AxiosRequestConfig) => {
-  const accessToken = useStore().state.currentUser.auth?.accessToken;
-  if (accessToken && config.url !== '/social-login/google/') {
+  const accessToken = store.state.currentUser.auth?.access;
+  if (accessToken && config.url !== refreshTokenFromGoogleURL) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -24,20 +26,32 @@ const addToken = (config: AxiosRequestConfig) => {
 // auth access token
 axiosInstance.interceptors.request.use((request) => addToken(request));
 
-// handle errors
+// handle errors and refresh token
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error) => handleResponseErrors(error)
+  async (error: AxiosError) => {
+    const originalRequest = error.config;
+    if (
+      error.response?.status === 401 &&
+      originalRequest.url !== refreshTokenFromGoogleURL
+    ) {
+      const refreshToken = store.state.currentUser.auth?.refresh;
+      if (refreshToken) {
+        const tokens = await api.auth.refreshTokenFromGoogle(refreshToken);
+        store.commit('currentUser/setPairTokens', {
+          access: tokens.access_token,
+          refresh: tokens.refresh_token,
+        });
+        return axiosInstance(originalRequest);
+      }
+    }
+    return handleResponseErrors(error);
+  }
 );
 
-const handleResponseErrors = (response: AxiosResponse) => {
-  const status = get(response, 'response.status', 'no_status') as
-    | string
-    | number;
-
-  const currentlyLoggedIn = !isNil(
-    useStore().state.currentUser.auth?.accessToken
-  );
+const handleResponseErrors = (response: AxiosError) => {
+  const status = response.response?.status || 'no_status';
+  const currentlyLoggedIn = !isNil(store.state.currentUser.auth?.access);
 
   // We want to catch only "ugly" errors here. Resource errors (validation errors etc) should
   // be caught directly in the view.
@@ -53,7 +67,7 @@ const handleResponseErrors = (response: AxiosResponse) => {
       break;
     case 401:
       if (currentlyLoggedIn) {
-        useStore().commit('currentUser/deleteTokens');
+        store.commit('currentUser/deleteTokens');
         Notify.create({
           color: 'positive',
           message: 'You were automatically logged out.',

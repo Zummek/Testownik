@@ -1,10 +1,4 @@
-import { store } from 'quasar/wrappers';
-import { InjectionKey } from 'vue';
-import {
-  createStore,
-  Store as VuexStore,
-  useStore as vuexUseStore,
-} from 'vuex';
+import { createStore, Store as VuexStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 import currentUser from './currentUser';
@@ -33,28 +27,17 @@ declare module '@vue/runtime-core' {
   }
 }
 
-// provide typings for `useStore` helper
-export const storeKey: InjectionKey<VuexStore<State>> = Symbol('vuex-key');
+export default createStore<State>({
+  modules: {
+    currentUser,
+  },
+  plugins: [
+    createPersistedState({
+      paths: ['currentUser'],
+    }),
+  ],
 
-export default store(function (/* { ssrContext } */) {
-  const Store = createStore<State>({
-    modules: {
-      currentUser,
-    },
-    plugins: [
-      createPersistedState({
-        paths: ['currentUser'],
-      }),
-    ],
-
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
-    strict: !!process.env.DEBUGGING,
-  });
-
-  return Store;
+  // enable strict mode (adds overhead!)
+  // for dev mode and --debug builds only
+  strict: !!process.env.DEBUGGING,
 });
-
-export function useStore() {
-  return vuexUseStore(storeKey);
-}

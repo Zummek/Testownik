@@ -26,10 +26,10 @@ export default defineComponent({
   methods: {
     async onSignIn(googleUser: gapi.auth2.GoogleUser) {
       const profile = googleUser.getBasicProfile();
-      const { access_token, id_token } = googleUser.getAuthResponse(true);
+      const { access_token } = googleUser.getAuthResponse(true);
 
       await api.auth
-        .signInWithGoogle({ access_token, id_token })
+        .getTokenFromGoogle(access_token)
         .then((response) => {
           this.$store.commit('currentUser/setCurrentUser', {
             profile: {
@@ -41,8 +41,8 @@ export default defineComponent({
               imageUrl: profile.getImageUrl(),
             },
             auth: {
-              accessToken: response.access_token,
-              refreshToken: response.refresh_token,
+              access: response.access_token,
+              refresh: response.refresh_token,
             },
           });
           console.log('success');

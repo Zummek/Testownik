@@ -6,13 +6,13 @@ const mutation: MutationTree<CurrentUserState> = {
     state.auth = payload.auth;
     state.profile = payload.profile;
   },
-  setAccessToken(state: CurrentUserState, accessToken: Auth['accessToken']) {
-    if (state.auth) state.auth.accessToken = accessToken;
-    else state.auth = { accessToken, refreshToken: null };
+  setAccessToken(state: CurrentUserState, access: Auth['access']) {
+    if (state.auth) state.auth.access = access;
+    else state.auth = { access, refresh: null };
   },
-  setRefreshToken(state: CurrentUserState, refreshToken: Auth['refreshToken']) {
-    if (state.auth) state.auth.refreshToken = refreshToken;
-    else state.auth = { refreshToken, accessToken: null };
+  setRefreshToken(state: CurrentUserState, refresh: Auth['refresh']) {
+    if (state.auth) state.auth.refresh = refresh;
+    else state.auth = { refresh, access: null };
   },
   deleteTokens(state: CurrentUserState) {
     state.auth = null;

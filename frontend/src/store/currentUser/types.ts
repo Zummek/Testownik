@@ -1,6 +1,6 @@
 export interface Auth {
-  accessToken: string | null;
-  refreshToken: string | null;
+  access: string | null;
+  refresh: string | null;
 }
 
 export interface User {
