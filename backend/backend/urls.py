@@ -19,12 +19,10 @@ from django.urls.conf import include
 
 from rest_framework.documentation import include_docs_urls
 
-API_TITLE = 'API title'
-API_DESCRIPTION = '...'
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('allauth.urls'), name='socialaccount_signup'),
-    path('auth/', include(('auth.urls', 'auth'))),
-    path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION, public=False))
+    path('auth/', include('auth.urls')),
+    path('quizzes/', include('quiz.urls')),
+    path('docs/', include_docs_urls(title='Testownik API', public=False))
 ]
