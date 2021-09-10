@@ -2,11 +2,28 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/app',
     component: () => import('layouts/MainLayout.vue'),
+    meta: { public: false },
+    children: [
+      {
+        path: '',
+        name: 'panel',
+        component: () => import('src/pages/panel/Panel.vue'),
+      },
+      {
+        path: '/quiz/:id',
+        name: 'quiz-start',
+        component: () => import('src/pages/quiz/QuizStart.vue'),
+      },
+    ],
+  },
+  {
+    path: '',
+    component: () => import('layouts/NoAppLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/HomePage.vue') },
-      { path: 'login', component: () => import('src/pages/LoginPage.vue') },
+      { path: '/login', component: () => import('src/pages/LoginPage.vue') },
     ],
   },
 

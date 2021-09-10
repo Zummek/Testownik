@@ -1,5 +1,9 @@
+import common from './common';
 import login from './login';
+import quiz from './quiz';
 
 export default {
-  login
+  common,
+  login,
+  quiz,
 };

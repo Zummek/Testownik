@@ -14,3 +14,23 @@ export interface PairAuthTokens {
   access_token: string;
   refresh_token: string;
 }
+
+export interface QuizListResponse {
+  data: {
+    id: number;
+    name: string;
+    description: string;
+    created: Date;
+    modified: Date;
+  }[];
+}
+
+export interface QuizDetailsResponse {
+  data: {
+    id: number;
+    name: string;
+    description: string;
+    created: Date;
+    modified: Date;
+  };
+}
