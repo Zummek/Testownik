@@ -1,6 +1,4 @@
-from django.db.models.aggregates import Count
 from rest_framework import serializers
-from rest_framework.generics import CreateAPIView
 from quiz.models import Answer, Question, Quiz
 
 
@@ -42,7 +40,6 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
-    questions_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Quiz
@@ -60,11 +57,13 @@ class QuizSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def get_questions_count(self, obj):
-        return obj.questions_count
-
 
 class QuizWithoutQuestionsSerializer(QuizSerializer):
+    questions_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Quiz
         fields = ['id', 'name', 'description', 'questions_count', 'created', 'modified']
+
+    def get_questions_count(self, obj):
+        return obj.questions_count

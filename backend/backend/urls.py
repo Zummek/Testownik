@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('allauth.urls'), name='socialaccount_signup'),
     path('auth/', include('auth.urls')),
+    path('me/', include('users.urls')),
     path('quizzes/', include('quiz.urls')),
     path('docs/', include_docs_urls(title='Testownik API', public=False))
 ]

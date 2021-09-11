@@ -12,10 +12,11 @@ class Answer(TimeStampedModel):
     def __str__(self):
         return self.text
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if not cleaned_data.get('text') and not cleaned_data.get('image'):
-            raise ValidationError({'text': 'Even one of text or image should have a value.'})
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     if not cleaned_data.get('text') and not cleaned_data.get('image'):
+    #         raise ValidationError({'text': 'Even one of text or image should have a value.'})
+    # TODO: Add validation for text and image fields.
 
 
 class Question(TimeStampedModel):
@@ -26,10 +27,11 @@ class Question(TimeStampedModel):
     def __str__(self):
         return self.text
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if not cleaned_data.get('text') and not cleaned_data.get('image'):
-            raise ValidationError({'text': 'Even one of text or image should have a value.'})
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     if not cleaned_data.get('text') and not cleaned_data.get('image'):
+    #         raise ValidationError({'text': 'Even one of text or image should have a value.'})
+    # TODO: Add validation for text and image fields.
 
 
 class Quiz(TimeStampedModel):
@@ -39,3 +41,6 @@ class Quiz(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'Quizzes'

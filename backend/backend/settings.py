@@ -15,6 +15,29 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 from datetime import timedelta
 
+LOGGING = {
+    'version': 1,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {'django.request': {
+        'level': 'ERROR',
+        'propagate': True,
+    },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+    }
+    }
+}
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -40,7 +63,6 @@ BASE_FRONTEND_URL = env.str('DJANGO_BASE_FRONTEND_URL', default='http://localhos
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['localhost'])
 
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "auth",
+    "users",
     "quiz",
     "rest_framework",
     "rest_framework.authtoken",
