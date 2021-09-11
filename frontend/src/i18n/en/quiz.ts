@@ -2,9 +2,9 @@ export default {
   quizzes: 'Quizzes',
   emptyList: 'Poki co twoja lista jest jeszcze pusta',
   settings: {
-    additionalNumberRepetitionsWithWrongAnswers:
+    additionalRepetitionsNumberWithWrongAnswers:
       'Dodatkowa liczba powtórzeń przy złej odpowiedzi',
-    initialNumberRepetitions: 'Początkowa liczba powtórzeń',
-    maximumNumberRepetitions: 'Maksymalna liczba powtórzeń',
+    initialRepetitionsNumber: 'Początkowa liczba powtórzeń',
+    maximumRepetitionsNumber: 'Maksymalna liczba powtórzeń',
   },
 };

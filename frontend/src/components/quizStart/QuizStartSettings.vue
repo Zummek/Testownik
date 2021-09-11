@@ -9,20 +9,20 @@
     />
     <div class="settings">
       <editable-field-text
-        :label="$t('quiz.settings.additionalNumberRepetitionsWithWrongAnswers')"
-        v-model:value="additionalNumberRepetitionsWithWrongAnswers"
+        :label="$t('quiz.settings.additionalRepetitionsNumberWithWrongAnswers')"
+        v-model:value="additionalRepetitionsNumber"
         inputType="number"
         @update:value="updateQuizSettings"
       />
       <editable-field-text
-        :label="$t('quiz.settings.initialNumberRepetitions')"
-        v-model:value="initialNumberRepetitions"
+        :label="$t('quiz.settings.initialRepetitionsNumber')"
+        v-model:value="initialRepetitionsNumber"
         inputType="number"
         @update:value="updateQuizSettings"
       />
       <editable-field-text
-        :label="$t('quiz.settings.maximumNumberRepetitions')"
-        v-model:value="maximumNumberRepetitions"
+        :label="$t('quiz.settings.maximumRepetitionsNumber')"
+        v-model:value="maximumRepetitionsNumber"
         inputType="number"
         @update:value="updateQuizSettings"
       />
@@ -39,9 +39,9 @@ export default defineComponent({
   name: 'StartQuizSettings',
   data() {
     return {
-      additionalNumberRepetitionsWithWrongAnswers: 1,
-      initialNumberRepetitions: 2,
-      maximumNumberRepetitions: 10,
+      additionalRepetitionsNumber: 1,
+      initialRepetitionsNumber: 2,
+      maximumRepetitionsNumber: 10,
     };
   },
   methods: {
