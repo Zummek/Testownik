@@ -1,3 +1,5 @@
+import { Quiz, QuizListItem } from 'app/types/Quiz';
+
 export interface SignInWithGoogleResponse extends PairAuthTokens {
   user: {
     first_name: string;
@@ -16,21 +18,9 @@ export interface PairAuthTokens {
 }
 
 export interface QuizListResponse {
-  data: {
-    id: number;
-    name: string;
-    description: string;
-    created: Date;
-    modified: Date;
-  }[];
+  data: QuizListItem[];
 }
 
 export interface QuizDetailsResponse {
-  data: {
-    id: number;
-    name: string;
-    description: string;
-    created: Date;
-    modified: Date;
-  };
+  data: Quiz;
 }
