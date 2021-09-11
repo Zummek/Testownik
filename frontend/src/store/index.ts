@@ -33,6 +33,7 @@ export default createStore<State>({
   },
   plugins: [
     createPersistedState({
+      key: 'testownik-store',
       paths: ['currentUser'],
     }),
   ],
