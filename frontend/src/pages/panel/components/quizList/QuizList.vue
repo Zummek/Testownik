@@ -6,6 +6,7 @@
       :columns="columns"
       row-key="id"
       :loading="isLoading"
+      :no-data-label="$t('quiz.emptyList')"
       bordered
       hide-pagination
     >
@@ -20,22 +21,16 @@
           />
         </q-td>
       </template>
-
-      <template v-slot:no-data>
-        <empty-list :message="$t('quiz.emptyList')" />
-      </template>
     </q-table>
   </div>
 </template>
 
 <script lang="ts">
-import EmptyList from 'src/components/EmptyList.vue';
 import api from 'src/services/api';
 import { QuizListResponse } from 'src/services/api/apiResources/types';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  components: { EmptyList },
   name: 'QuizList',
   data: function () {
     return {
