@@ -1,0 +1,10 @@
+Django==3.2.6
+drf_nested_routers==0.93.3
+django_allauth==0.45.0
+django_environ==0.4.5
+dj_rest_auth==2.1.11
+djangorestframework_simplejwt==4.7.1
+django_model_utils==4.1.1
+djangorestframework==3.12.4
+environ==1.0
+rest_framework_nested==0.1.0
