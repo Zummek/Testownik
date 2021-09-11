@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import QuizList from './components/quizList/QuizList.vue';
+import QuizList from './components/QuizList.vue';
 
 export default defineComponent({
   components: { QuizList },

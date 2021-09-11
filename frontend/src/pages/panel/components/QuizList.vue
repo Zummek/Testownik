@@ -22,15 +22,20 @@
         </q-td>
       </template>
     </q-table>
+    <q-dialog v-model="showQuizDialog">
+      <quiz-start :quizId="selectedQuizId" />
+    </q-dialog>
   </div>
 </template>
 
 <script lang="ts">
+import QuizStart from 'src/components/quizStart/QuizStart.vue';
 import api from 'src/services/api';
 import { QuizListResponse } from 'src/services/api/apiResources/types';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  components: { QuizStart },
   name: 'QuizList',
   data: function () {
     return {
@@ -52,6 +57,8 @@ export default defineComponent({
           name: 'actions',
         },
       ],
+      showQuizDialog: false,
+      selectedQuizId: 0,
     };
   },
   created() {
@@ -62,8 +69,9 @@ export default defineComponent({
       this.rows = await api.quiz.getList();
       this.isLoading = false;
     },
-    openQuiz(id: string) {
-      void this.$router.push({ name: 'quiz-start', params: { id } });
+    openQuiz(id: number) {
+      this.selectedQuizId = id;
+      this.showQuizDialog = true;
     },
   },
 });

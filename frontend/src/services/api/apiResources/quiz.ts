@@ -6,7 +6,7 @@ export const getList = async () => {
   return response.data.data;
 };
 
-export const getDetails = async (id: string) => {
+export const getDetails = async (id: number) => {
   const response = await axiosInstance.get<types.QuizDetailsResponse>(
     `quizzes/${encodeURIComponent(id)}`
   );
