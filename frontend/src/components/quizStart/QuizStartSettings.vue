@@ -10,28 +10,30 @@
     <div class="settings">
       <editable-field-text
         :label="$t('quiz.settings.additionalRepetitionsNumberWithWrongAnswers')"
-        v-model:value="additionalRepetitionsNumber"
+        v-model:value="settings.additionalRepetitions"
         inputType="number"
-        @update:value="updateQuizSettings"
+        @update:value="(val) => updateQuizSetting('additionalRepetitions', val)"
       />
       <editable-field-text
         :label="$t('quiz.settings.initialRepetitionsNumber')"
-        v-model:value="initialRepetitionsNumber"
+        v-model:value="settings.initialRepetitions"
         inputType="number"
-        @update:value="updateQuizSettings"
+        @update:value="(val) => updateQuizSetting('initialRepetitions', val)"
       />
       <editable-field-text
         :label="$t('quiz.settings.maximumRepetitionsNumber')"
-        v-model:value="maximumRepetitionsNumber"
+        v-model:value="settings.maximumRepetitions"
         inputType="number"
-        @update:value="updateQuizSettings"
+        @update:value="(val) => updateQuizSetting('maximumRepetitions', val)"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { UserSettings } from 'app/types/User';
 import EditableFieldText from 'src/components/editableFieldText/EditableFieldText.vue';
+import api from 'src/services/api';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -39,12 +41,23 @@ export default defineComponent({
   name: 'StartQuizSettings',
   data() {
     return {
-      additionalRepetitionsNumber: 1,
-      initialRepetitionsNumber: 2,
-      maximumRepetitionsNumber: 10,
+      settings: {
+        additionalRepetitions: 1,
+        initialRepetitions: 2,
+        maximumRepetitions: 10,
+      },
     };
   },
+  created() {
+    void this.getQuizSettings();
+  },
   methods: {
+    async getQuizSettings() {
+      this.settings = await api.me.getSettings();
+    },
+    async updateQuizSetting(key: keyof UserSettings, value: number) {
+      await api.me.updateSetting({ [key]: value });
+    },
     startQuiz() {
       void this.$router.push({
         name: 'quiz',
@@ -52,10 +65,6 @@ export default defineComponent({
           id: this.$route.params.id,
         },
       });
-    },
-    updateQuizSettings(value: number) {
-      console.log(value);
-      // TODO: update quiz settings
     },
   },
 });
