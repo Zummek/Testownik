@@ -1,5 +1,5 @@
 <template>
-  <q-page :padding="$q.screen.gt.xs" class="main-layout__page full-width">
+  <q-page :padding="$q.screen.gt.xs" class="full-width">
     <q-card v-if="quiz && selectedQuestion">
       <q-card-section>
         <page-header

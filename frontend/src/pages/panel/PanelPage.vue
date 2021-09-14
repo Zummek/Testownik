@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row justify-center">
+  <q-page :padding="$q.screen.gt.xs" class="row justify-center">
     <quiz-list />
   </q-page>
 </template>
