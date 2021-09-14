@@ -22,7 +22,7 @@
         </q-td>
       </template>
     </q-table>
-    <q-dialog v-model="showQuizDialog">
+    <q-dialog v-model="showQuizDialog" @hide="onQuizDialogHide">
       <quiz-start :quizId="selectedQuizId" />
     </q-dialog>
   </div>
@@ -61,17 +61,22 @@ export default defineComponent({
       selectedQuizId: 0,
     };
   },
-  created() {
-    void this.loadQuizzes();
+  async created() {
+    await this.loadQuizzes();
+    if (this.$route.query.s) void this.openQuiz(+String(this.$route.query.s));
   },
   methods: {
     async loadQuizzes() {
       this.rows = await api.quiz.getList();
       this.isLoading = false;
     },
-    openQuiz(id: number) {
+    async openQuiz(id: number) {
+      await this.$router.replace(`${this.$route.path}?s=${id}`);
       this.selectedQuizId = id;
       this.showQuizDialog = true;
+    },
+    async onQuizDialogHide() {
+      await this.$router.replace(`${this.$route.path}`);
     },
   },
 });

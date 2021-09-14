@@ -1,6 +1,6 @@
 <template>
   <q-page :padding="$q.screen.gt.xs" class="main-layout__page full-width">
-    <q-card v-if="quiz">
+    <q-card v-if="quiz && selectedQuestion">
       <q-card-section>
         <page-header
           :title="quiz.name || $t('common.loading')"
@@ -79,16 +79,21 @@ export default defineComponent({
       currentPanel: 'list',
     };
   },
-  created() {
-    void this.fetchQuiz();
+  async created() {
+    let selectedFromQuery;
+    await this.fetchQuiz();
+
+    if (this.$route.query.s)
+      selectedFromQuery = this.quiz?.questions.find(
+        (q) => q.id === +String(this.$route.query.s)
+      );
+
+    this.selectedQuestion =
+      selectedFromQuery || this.quiz?.questions[0] || null;
   },
   methods: {
     async fetchQuiz() {
       this.quiz = await api.quiz.getDetails(+this.$route.params.quizId);
-      const selectedFromQuery = this.quiz.questions.find(
-        (q) => q.id === +String(this.$route.query.s)
-      );
-      this.selectedQuestion = selectedFromQuery || this.quiz.questions[0];
     },
     selectQuestion(question: Question) {
       void this.$router.replace(`${this.$route.path}?s=${question.id}`);
