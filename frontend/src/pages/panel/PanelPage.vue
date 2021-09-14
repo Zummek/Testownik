@@ -10,6 +10,6 @@ import QuizList from './components/QuizList.vue';
 
 export default defineComponent({
   components: { QuizList },
-  name: 'Panel',
+  name: 'PanelPage',
 });
 </script>

@@ -1,19 +1,14 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="row items-center">
-        <q-btn flat round color="primary" icon="arrow_back" v-close-popup />
-        <div class="quiz-name">
-          {{ quiz?.name || 'loading' }}
-        </div>
-      </div>
+      <page-header :title="quiz?.name || $t('common.loading')" closePopup />
       <div class="row quiz-desc">
         {{ quiz?.description }}
       </div>
     </q-card-section>
     <q-card-section>
       <div class="column items-center">
-        {{ quiz?.questions.length }} questions
+        {{ $t('quiz.nQuestions', { n: quiz?.questions.length }) }}
         <q-btn flat color="primary" @click="previewQuestions" label="Preview" />
       </div>
     </q-card-section>
@@ -27,10 +22,11 @@
 import api from 'src/services/api';
 import { QuizDetailsResponse } from 'src/services/api/apiResources/types';
 import { defineComponent } from 'vue';
+import PageHeader from '../PageHeader.vue';
 import QuizStartSettings from './QuizStartSettings.vue';
 
 export default defineComponent({
-  components: { QuizStartSettings },
+  components: { QuizStartSettings, PageHeader },
   name: 'QuizStart',
   props: {
     quizId: {
@@ -54,9 +50,9 @@ export default defineComponent({
     },
     previewQuestions() {
       void this.$router.push({
-        name: 'quizPreview',
+        name: 'quiz-questions',
         params: {
-          id: this.quizId,
+          quizId: this.quizId,
         },
       });
     },

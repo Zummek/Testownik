@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import LastUsedBases from 'src/components/homePage/lastUsedBases/LastUsedBases.vue';
+import LastUsedBases from './HomePageLastUsedBases.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

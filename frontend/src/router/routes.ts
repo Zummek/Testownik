@@ -9,7 +9,12 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'panel',
-        component: () => import('src/pages/panel/Panel.vue'),
+        component: () => import('src/pages/panel/PanelPage.vue'),
+      },
+      {
+        path: '/quizzes/:quizId/questions',
+        name: 'quiz-questions',
+        component: () => import('src/pages/quiz/QuizQuestionListPage.vue'),
       },
     ],
   },
@@ -17,7 +22,7 @@ const routes: RouteRecordRaw[] = [
     path: '',
     component: () => import('layouts/NoAppLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/HomePage.vue') },
+      { path: '', component: () => import('src/pages/homePage/HomePage.vue') },
       { path: '/login', component: () => import('src/pages/LoginPage.vue') },
     ],
   },

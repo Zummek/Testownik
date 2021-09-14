@@ -6,12 +6,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
-      <q-card>
-        <q-card-section>
-          <router-view />
-        </q-card-section>
-      </q-card>
+    <q-page-container class="main-layout__page-container row justify-center">
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
@@ -26,6 +22,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .main-layout {
-  background-color: $background;
+  background-color: $futherBackground;
+}
+.main-layout__page-container * {
+  max-width: 1500px;
 }
 </style>
