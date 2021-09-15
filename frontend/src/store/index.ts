@@ -2,7 +2,9 @@ import { createStore, Store as VuexStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 import currentUser from './currentUser';
+import quizSessions from './quizSessions';
 import { CurrentUserState } from './currentUser/types';
+import { QuizSessionsState } from './quizSessions/types';
 
 /*
  * If not building with SSR mode, you can
@@ -18,6 +20,7 @@ export interface State {
   // example: ExampleStateInterface;
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   currentUser: CurrentUserState;
+  quizSessions: QuizSessionsState;
 }
 
 // provide typings for `this.$store`
@@ -30,11 +33,12 @@ declare module '@vue/runtime-core' {
 export default createStore<State>({
   modules: {
     currentUser,
+    quizSessions,
   },
   plugins: [
     createPersistedState({
       key: 'testownik-store',
-      paths: ['currentUser'],
+      paths: ['currentUser', 'quizSessions'],
     }),
   ],
 

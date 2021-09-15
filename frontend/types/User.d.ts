@@ -1,4 +1,4 @@
-export interface UserSettings {
+export interface QuizSettings {
   additionalRepetitions: number;
   initialRepetitions: number;
   maximumRepetitions: number;

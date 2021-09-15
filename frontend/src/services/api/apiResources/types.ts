@@ -1,5 +1,5 @@
 import { Quiz, QuizListItem } from 'app/types/Quiz';
-import { UserSettings } from 'app/types/User';
+import { QuizSettings } from 'app/types/User';
 
 export interface SignInWithGoogleResponse extends PairAuthTokens {
   user: {
@@ -19,11 +19,11 @@ export interface PairAuthTokens {
 }
 
 export interface MeGetSettingsResponse {
-  data: UserSettings;
+  data: QuizSettings;
 }
 
 export type MeUpdateSettingRequest = {
-  [x in keyof UserSettings]?: number;
+  [x in keyof QuizSettings]?: number;
 };
 
 export interface QuizListResponse {

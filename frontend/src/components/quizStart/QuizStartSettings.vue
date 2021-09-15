@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { UserSettings } from 'app/types/User';
+import { QuizSettings } from 'app/types/User';
 import EditableFieldText from 'src/components/editableFieldText/EditableFieldText.vue';
 import api from 'src/services/api';
 import { defineComponent } from 'vue';
@@ -55,7 +55,7 @@ export default defineComponent({
     async getQuizSettings() {
       this.settings = await api.me.getSettings();
     },
-    async updateQuizSetting(key: keyof UserSettings, value: number) {
+    async updateQuizSetting(key: keyof QuizSettings, value: number) {
       await api.me.updateSetting({ [key]: value });
     },
     startQuiz() {
