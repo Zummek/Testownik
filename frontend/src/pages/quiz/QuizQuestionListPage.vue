@@ -25,7 +25,7 @@
         <q-separator vertical />
 
         <q-card-section class="full-width">
-          <question-details :selectedQuestion="selectedQuestion" />
+          <question-details :question="selectedQuestion" />
         </q-card-section>
       </q-card-section>
 
@@ -53,7 +53,7 @@
               icon="arrow_back"
               label="Back to list"
             />
-            <question-details :selectedQuestion="selectedQuestion" />
+            <question-details :question="selectedQuestion" />
           </q-tab-panel>
         </q-tab-panels>
       </q-card-section>

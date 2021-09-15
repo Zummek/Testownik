@@ -3,13 +3,21 @@
     <q-card-section>
       <quiz-question
         class="text-center"
-        :questionText="selectedQuestion.text"
-        :questionImage="selectedQuestion.image"
+        :questionText="question.text"
+        :questionImage="question.image"
       />
     </q-card-section>
     <q-card-section>
-      <quiz-answers :answers="selectedQuestion.answers" showCorrectAnswer />
+      <quiz-answers :answers="question.answers" showCorrectAnswer />
     </q-card-section>
+    <span
+      class="q-mt-md row justify-center items-center text-accent"
+      v-if="isUnanswered"
+    >
+      <q-icon class="q-mr-sm" name="warning_amber" color="accent" size="34px" />
+      {{ $t('quiz.thisQuestionDoesNotHaveSpecificAnswer') }} <br />
+      {{ $t('quiz.ifYouKnowAnswerHelpAnswerThisQuestionByReportingIt') }}
+    </span>
   </div>
 </template>
 
@@ -23,9 +31,14 @@ export default defineComponent({
   components: { QuizQuestion, QuizAnswers },
   name: 'QuizQuestionListPageDetails',
   props: {
-    selectedQuestion: {
+    question: {
       type: Object as () => Question,
       required: true,
+    },
+  },
+  computed: {
+    isUnanswered(): boolean {
+      return !this.question.answers.some((answer) => answer.isCorrect);
     },
   },
 });
