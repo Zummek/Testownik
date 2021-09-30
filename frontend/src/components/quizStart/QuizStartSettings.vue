@@ -39,6 +39,9 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   components: { EditableFieldText },
   name: 'StartQuizSettings',
+  props: {
+    quizId: Number,
+  },
   data() {
     return {
       settings: {
@@ -60,9 +63,9 @@ export default defineComponent({
     },
     startQuiz() {
       void this.$router.push({
-        name: 'quiz',
+        name: 'quiz-quizzing',
         params: {
-          id: this.$route.params.id,
+          quizId: String(this.quizId),
         },
       });
     },

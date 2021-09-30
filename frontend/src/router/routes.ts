@@ -14,16 +14,26 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/quizzes/:quizId/questions',
         name: 'quiz-questions',
-        component: () => import('src/pages/quiz/QuizQuestionListPage.vue'),
+        component: () => import('src/pages/quiz/list/QuizQuestionListPage.vue'),
+      },
+      {
+        path: '/quizzes/:quizId',
+        name: 'quiz-quizzing',
+        component: () => import('src/pages/quiz/quizzing/QuizQuizzingPage.vue'),
       },
     ],
   },
   {
     path: '',
     component: () => import('layouts/NoAppLayout.vue'),
+    meta: { public: true },
     children: [
       { path: '', component: () => import('src/pages/homePage/HomePage.vue') },
-      { path: '/login', component: () => import('src/pages/LoginPage.vue') },
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import('src/pages/LoginPage.vue'),
+      },
     ],
   },
 

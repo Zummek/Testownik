@@ -50,6 +50,7 @@ axiosInstance.interceptors.response.use(
 );
 
 const handleResponseErrors = (response: AxiosError) => {
+  console.log(response);
   const status = response.response?.status || 'no_status';
   const currentlyLoggedIn = !isNil(store.state.currentUser.auth?.access);
 

@@ -8,11 +8,11 @@ const mutation: MutationTree<QuizSessionsState> = {
       ({ quizController }) => quizController.quiz.id === payload.quiz.id
     );
     const pack = {
-      quizController: payload,
+      quizController: Object.assign({}, payload),
       lastRun: new Date(),
     };
 
-    if (wantedQuizIndex) {
+    if (wantedQuizIndex !== -1) {
       state.quizzes.splice(wantedQuizIndex, 1, pack);
     } else {
       state.quizzes.unshift(pack);

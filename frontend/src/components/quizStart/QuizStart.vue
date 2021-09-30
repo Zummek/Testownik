@@ -1,19 +1,19 @@
 <template>
-  <q-card>
+  <q-card v-if="quiz">
     <q-card-section>
-      <page-header :title="quiz?.name || $t('common.loading')" closePopup />
+      <page-header :title="quiz.name || $t('common.loading')" closePopup />
       <div class="row quiz-desc">
-        {{ quiz?.description }}
+        {{ quiz.description }}
       </div>
     </q-card-section>
     <q-card-section>
       <div class="column items-center">
-        {{ $t('quiz.nQuestions', { n: quiz?.questions.length }) }}
+        {{ $t('quiz.nQuestions', { n: quiz.questions.length }) }}
         <q-btn flat color="primary" @click="previewQuestions" label="Preview" />
       </div>
     </q-card-section>
     <q-card-section class="quiz-start-settings-container">
-      <quiz-start-settings />
+      <quiz-start-settings :quizId="quiz.id" />
     </q-card-section>
   </q-card>
 </template>
