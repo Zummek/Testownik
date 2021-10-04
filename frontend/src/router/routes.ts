@@ -21,6 +21,11 @@ const routes: RouteRecordRaw[] = [
         name: 'quiz-quizzing',
         component: () => import('src/pages/quiz/quizzing/QuizQuizzingPage.vue'),
       },
+      {
+        path: '/quizzes/:quizId/summary',
+        name: 'quiz-summary',
+        component: () => import('src/pages/quiz/quizzing/QuizSummaryPage.vue'),
+      },
     ],
   },
   {

@@ -39,9 +39,6 @@ export default defineComponent({
       default: false,
     },
   },
-  mounted() {
-    console.log('QuizAnswer mounted', this.isSelected);
-  },
 });
 </script>
 

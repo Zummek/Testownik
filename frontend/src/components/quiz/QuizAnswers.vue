@@ -49,8 +49,6 @@ export default defineComponent({
   },
   mounted() {
     window.addEventListener('keydown', (e) => this.onKeyDown(e));
-    console.log(this.selected);
-    console.log(this.selectedState);
   },
   beforeUnmount() {
     window.removeEventListener('keydown', (e) => this.onKeyDown(e));

@@ -1,5 +1,5 @@
 <template>
-  <div class="stopwatch">
+  <div class="stopwatch text-h4" :class="{ 'text-h5': smaller }">
     <span v-if="hours" class="time">{{ hours }}</span>
     <span v-if="hours" class="colon">:</span>
     <span class="time">{{ minutes }}</span>
@@ -17,6 +17,10 @@ export default defineComponent({
     time: {
       type: Number,
       required: true,
+    },
+    smaller: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -50,7 +54,7 @@ export default defineComponent({
   flex-direction: row;
   align-items: center;
   white-space: nowrap;
-  font-size: 2rem;
+  /* font-size: 2rem; */
 
   &.time {
     margin-right: 0.5rem;

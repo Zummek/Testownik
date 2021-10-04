@@ -17,13 +17,16 @@ class QuizzingController implements IQuizzingController {
   status: QuizzingStatus;
   selectedAnswers: Answer[];
   settings: QuizzingSettings;
+  questionsWithoutCorrectAnswer: Question[];
   remainingQuestions: RemainingQuestion[];
   currentQuestion: RemainingQuestion;
+  correctAnswers: number;
+  incorrectAnswers: number;
 
   constructor(
     quiz?: Quiz,
     settings?: QuizzingSettings,
-    oldQuizzingController?: IQuizzingController
+    oldQC?: IQuizzingController
   ) {
     if (quiz && settings) {
       this.quiz = quiz;
@@ -34,18 +37,26 @@ class QuizzingController implements IQuizzingController {
       this.selectedAnswers = [];
       this.remainingQuestions = [];
       this.settings = settings;
+      this.questionsWithoutCorrectAnswer = quiz.questions.filter((question) => {
+        return !question.answers.some((answer) => answer.isCorrect);
+      });
       this.generateRemainingQuestions();
       this.currentQuestion = this.getRandomRemainingQuestion();
-    } else if (oldQuizzingController) {
-      this.quiz = oldQuizzingController.quiz;
-      this.upTime = oldQuizzingController.upTime;
+      this.correctAnswers = 0;
+      this.incorrectAnswers = 0;
+    } else if (oldQC) {
+      this.quiz = oldQC.quiz;
+      this.upTime = oldQC.upTime;
       this._timer = 0;
-      this.isQuizzing = oldQuizzingController.isQuizzing;
-      this.status = oldQuizzingController.status;
-      this.selectedAnswers = oldQuizzingController.selectedAnswers;
-      this.remainingQuestions = oldQuizzingController.remainingQuestions;
-      this.settings = oldQuizzingController.settings;
-      this.currentQuestion = oldQuizzingController.currentQuestion;
+      this.isQuizzing = oldQC.isQuizzing;
+      this.status = oldQC.status;
+      this.selectedAnswers = oldQC.selectedAnswers;
+      this.remainingQuestions = oldQC.remainingQuestions;
+      this.settings = oldQC.settings;
+      this.questionsWithoutCorrectAnswer = oldQC.questionsWithoutCorrectAnswer;
+      this.currentQuestion = oldQC.currentQuestion;
+      this.correctAnswers = oldQC.correctAnswers;
+      this.incorrectAnswers = oldQC.incorrectAnswers;
     } else
       throw new Error(
         'No quiz with settings or oldQuizzingController provided'
@@ -61,25 +72,36 @@ class QuizzingController implements IQuizzingController {
   }
 
   get masteredQuestionsFormated() {
+    const allAvailableQuestions =
+      this.quiz.questions.length - this.questionsWithoutCorrectAnswer.length;
     const masteredQuestions =
-      this.quiz.questions.length - this.remainingQuestions.length;
-    return `${masteredQuestions}/${this.quiz.questions.length}`;
+      allAvailableQuestions - this.remainingQuestions.length;
+    return `${masteredQuestions}/${allAvailableQuestions}`;
   }
 
   generateRemainingQuestions(): void {
-    this.remainingQuestions = this.quiz.questions.map((question) => ({
-      question,
-      remainingRepetitions: this.settings.initialRepetitions,
-    }));
+    this.remainingQuestions = this.quiz.questions
+      .filter((question) => {
+        return question.answers.some((answer) => answer.isCorrect);
+      })
+      .map((question) => ({
+        question,
+        remainingRepetitions: this.settings.initialRepetitions,
+      }));
   }
 
   getRandomRemainingQuestion(otherThan?: Question): RemainingQuestion {
     let randomIndex;
 
-    do {
-      randomIndex = Math.floor(Math.random() * this.remainingQuestions.length);
-    } while (this.remainingQuestions[randomIndex].question === otherThan);
-
+    if (this.remainingQuestions.length === 1) {
+      randomIndex = 0;
+    } else {
+      do {
+        randomIndex = Math.floor(
+          Math.random() * this.remainingQuestions.length
+        );
+      } while (this.remainingQuestions[randomIndex].question === otherThan);
+    }
     return this.remainingQuestions[randomIndex];
   }
 
@@ -99,6 +121,7 @@ class QuizzingController implements IQuizzingController {
   finish(): void {
     this.isQuizzing = false;
     window.clearInterval(this._timer);
+    this.status = 'finished';
     this.saveSession();
   }
 
@@ -118,6 +141,7 @@ class QuizzingController implements IQuizzingController {
 
     if (isCorrectAnswer) {
       this.currentQuestion.remainingRepetitions--;
+      this.correctAnswers++;
       if (this.currentQuestion.remainingRepetitions === 0) {
         this.remainingQuestions = this.remainingQuestions.filter(
           (question) => question !== this.currentQuestion
@@ -126,6 +150,7 @@ class QuizzingController implements IQuizzingController {
     } else {
       this.currentQuestion.remainingRepetitions +=
         this.settings.additionalRepetitions;
+      this.incorrectAnswers++;
     }
     this.status = 'showingAnswer';
     this.saveSession();
@@ -137,8 +162,7 @@ class QuizzingController implements IQuizzingController {
     this.selectedAnswers = [];
 
     if (this.remainingQuestions.length === 0) {
-      this.status = 'finished';
-      this.saveSession();
+      this.finish();
       return;
     }
 
@@ -153,7 +177,6 @@ class QuizzingController implements IQuizzingController {
   }
 
   private saveSession(): void {
-    console.log('saveSession');
     store.commit('quizSessions/saveSession', this);
   }
 }

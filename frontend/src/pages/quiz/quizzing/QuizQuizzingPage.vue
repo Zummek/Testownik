@@ -45,17 +45,8 @@
           </div>
         </q-card-section>
 
-        <q-card-section class="quiz-quizzing__side-bar column items-center">
-          <side-bar-actions
-            :mainBtnIcon="mainBtnIcon"
-            :mainBtnDisabled="!quizzing.selectedAnswers.length"
-            :onMainBtnClick="onMainBtnClick"
-          />
-          <stopwatch :time="quizzing.upTime" />
-          <div class="q-mt-md column items-center">
-            <span>{{ $t('quiz.masteredQuestions') }} </span>
-            <span>{{ quizzing.masteredQuestionsFormated }} </span>
-          </div>
+        <q-card-section class="quiz-quizzing__side-bar">
+          <side-bar :quizzing="quizzing" :onMainBtnClick="onMainBtnClick" />
         </q-card-section>
       </q-card-section>
     </q-card>
@@ -65,14 +56,13 @@
 <script lang="ts">
 import QuizAnswers from 'src/components/quiz/QuizAnswers.vue';
 import QuizQuestion from 'src/components/quiz/QuizQuestion.vue';
-import Stopwatch from 'src/components/stopwatch/Stopwatch.vue';
 import QuizzingController from 'src/controllers/QuizzingController';
+import SideBar from './QuizQuizzingPageSideBar.vue';
 import api from 'src/services/api';
 import { defineComponent } from 'vue';
-import SideBarActions from './QuizQuizzingPageSideBarActions.vue';
 
 export default defineComponent({
-  components: { QuizQuestion, QuizAnswers, Stopwatch, SideBarActions },
+  components: { QuizQuestion, QuizAnswers, SideBar },
   name: 'QuizQuizzingPage',
   data() {
     return {
@@ -82,26 +72,18 @@ export default defineComponent({
   },
   async created() {
     await this.startResumeQuiz();
-    console.log('quizzing', this.quizzing);
   },
   beforeUnmount() {
     this.quizzing?.pause();
   },
-  computed: {
-    mainBtnIcon(): string {
-      return this.quizzing?.status === 'markingAnswer'
-        ? 'done'
-        : 'arrow_forward_ios';
-    },
-  },
   methods: {
     async startResumeQuiz() {
       const oldSession = this.$store.state.quizSessions.quizzes.find(
-        (session) =>
-          session.quizController.quiz.id === +this.$route.params.quizId
+        ({ quizController }) =>
+          quizController.quiz.id === +this.$route.params.quizId
       );
 
-      if (oldSession) {
+      if (oldSession && oldSession.quizController.status !== 'finished') {
         this.quizzing = QuizzingController.fromSession(oldSession);
       } else {
         const quiz = await api.quiz.getDetails(+this.$route.params.quizId);
@@ -114,7 +96,13 @@ export default defineComponent({
     onMainBtnClick() {
       if (this.quizzing?.status === 'markingAnswer')
         this.isCorrectAnswer = this.quizzing.answerQuestion();
-      else this.quizzing?.getNextQuestion();
+      else if (this.quizzing?.remainingQuestions.length === 0) {
+        this.quizzing?.finish();
+        return this.$router.push({
+          name: 'quiz-summary',
+          params: { quizId: this.$route.params.quizId },
+        });
+      } else this.quizzing?.getNextQuestion();
     },
   },
 });
@@ -122,7 +110,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .quiz-quizzing {
-  min-height: 500px;
+  min-height: 50vh;
 }
 .quiz-quizzing__transition {
   position: relative;

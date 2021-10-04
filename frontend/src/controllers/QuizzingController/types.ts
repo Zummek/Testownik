@@ -17,6 +17,9 @@ export interface QuizzingController {
   status: QuizzingStatus;
   selectedAnswers: Answer[];
   settings: QuizzingSettings;
+  questionsWithoutCorrectAnswer: Question[];
   remainingQuestions: RemainingQuestion[];
   currentQuestion: RemainingQuestion;
+  correctAnswers: number;
+  incorrectAnswers: number;
 }
