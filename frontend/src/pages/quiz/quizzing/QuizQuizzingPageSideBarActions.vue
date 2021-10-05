@@ -55,7 +55,10 @@ export default defineComponent({
   },
   methods: {
     onKeyDown(event: KeyboardEvent) {
-      if (!this.mainBtnDisabled && event.key === 'Enter') {
+      if (
+        !this.mainBtnDisabled &&
+        (event.key === 'Enter' || event.key === ' ')
+      ) {
         this.onMainBtnClickDebounced();
       }
     },

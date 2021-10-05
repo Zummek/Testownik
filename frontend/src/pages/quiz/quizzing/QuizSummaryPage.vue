@@ -27,12 +27,12 @@
         </div>
         <centred-data-field
           :label="$t('quiz.summary.questionsNumber')"
-          :value="quizzing.quiz.questions.length"
+          :data="quizzing.quiz.questions.length"
         />
         <centred-data-field
           :label="$t('quiz.summary.givenAnswers')"
           :caption="$t('quiz.summary.givenAnswersCaption')"
-          :value="`${quizzing.correctAnswers} / ${quizzing.incorrectAnswers}`"
+          :data="`${quizzing.correctAnswers} / ${quizzing.incorrectAnswers}`"
         />
       </q-card-section>
 

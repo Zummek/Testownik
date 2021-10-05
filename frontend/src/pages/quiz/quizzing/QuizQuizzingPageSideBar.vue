@@ -6,37 +6,18 @@
       :onMainBtnClick="onMainBtnClick"
     />
     <stopwatch :time="quizzing.upTime" />
-    <div class="q-mt-md column items-center">
-      <span>{{ $t('quiz.masteredQuestions') }} </span>
-      <span>{{ quizzing.masteredQuestionsFormated }} </span>
-    </div>
-    <div
+    <centred-data-field
+      class="q-mt-md"
+      :label="$t('quiz.masteredQuestions')"
+      :data="quizzing.masteredQuestionsFormated"
+    />
+    <centred-data-field
       v-if="quizzing.questionsWithoutCorrectAnswer.length"
-      class="q-mt-md column items-center"
-    >
-      <span>
-        {{ $t('quiz.unavailbleQuestions') }}
-        <q-icon
-          class="q-ml-xs absolute"
-          size="xs"
-          name="help_outline"
-          color="info"
-        >
-          <q-tooltip
-            class="text-center"
-            max-width="200px"
-            transition-show="scale"
-            transition-hide="scale"
-            :delay="200"
-          >
-            {{ $t('quiz.unavailbleQuestionsInfo') }}
-          </q-tooltip>
-        </q-icon>
-      </span>
-      <span class="justify-center items-center">
-        {{ quizzing.questionsWithoutCorrectAnswer.length }}
-      </span>
-    </div>
+      :label="$t('quiz.unavailbleQuestions')"
+      :data="quizzing.questionsWithoutCorrectAnswer.length"
+      :tooltip="$t('quiz.unavailbleQuestionsInfo')"
+      smaller
+    />
   </div>
 </template>
 
@@ -45,9 +26,10 @@ import QuizzingController from 'src/controllers/QuizzingController';
 import SideBarActions from './QuizQuizzingPageSideBarActions.vue';
 import Stopwatch from 'src/components/stopwatch/Stopwatch.vue';
 import { defineComponent, PropType } from 'vue';
+import CentredDataField from 'src/components/CentredDataField.vue';
 
 export default defineComponent({
-  components: { Stopwatch, SideBarActions },
+  components: { Stopwatch, SideBarActions, CentredDataField },
   name: 'QuizQuizzingPageSideBar',
   props: {
     quizzing: {
