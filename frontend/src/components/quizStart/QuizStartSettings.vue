@@ -1,7 +1,6 @@
 <template>
   <div class="column items-center">
     <q-btn
-      glossy
       class="start-btn"
       color="primary"
       label="Start Quiz"
