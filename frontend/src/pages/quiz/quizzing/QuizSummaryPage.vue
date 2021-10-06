@@ -18,22 +18,39 @@
         <span class="text-h5">{{ $t('common.summary') }}</span>
       </q-card-section>
 
-      <q-card-section :horizontal="$q.screen.gt.xs" class="justify-evenly">
-        <div class="q-mb-md column col">
-          <span class="text-body1 text-center">
-            {{ $t('quiz.summary.duration') }}
-          </span>
-          <stopwatch class="justify-center" :time="quizzing.upTime" smaller />
+      <q-card-section>
+        <div
+          class="justify-evenly"
+          :class="[$q.screen.gt.xs ? 'row' : 'column']"
+        >
+          <div class="col-6 q-mb-md column">
+            <span class="text-body1 text-center">
+              {{ $t('quiz.summary.duration') }}
+            </span>
+            <stopwatch class="justify-center" :time="quizzing.upTime" smaller />
+          </div>
+          <centred-data-field
+            class="col-6"
+            :label="$t('quiz.summary.questionsNumber')"
+            :data="
+              quizzing.quiz.questions.length -
+              quizzing.questionsWithoutCorrectAnswer.length
+            "
+          />
+          <centred-data-field
+            class="col-6"
+            v-if="quizzing.questionsWithoutCorrectAnswer.length"
+            :label="$t('quiz.unavailbleQuestions')"
+            :data="quizzing.questionsWithoutCorrectAnswer.length"
+            :tooltip="$t('quiz.unavailbleQuestionsInfo')"
+          />
+          <centred-data-field
+            class="col-6"
+            :label="$t('quiz.summary.givenAnswers')"
+            :caption="$t('quiz.summary.givenAnswersCaption')"
+            :data="`${quizzing.correctAnswers} / ${quizzing.incorrectAnswers}`"
+          />
         </div>
-        <centred-data-field
-          :label="$t('quiz.summary.questionsNumber')"
-          :data="quizzing.quiz.questions.length"
-        />
-        <centred-data-field
-          :label="$t('quiz.summary.givenAnswers')"
-          :caption="$t('quiz.summary.givenAnswersCaption')"
-          :data="`${quizzing.correctAnswers} / ${quizzing.incorrectAnswers}`"
-        />
       </q-card-section>
 
       <q-card-section class="row justify-center">
@@ -43,7 +60,7 @@
           :to="{ name: 'quiz-quizzing', params: { quizId: quizzing.quiz.id } }"
         />
         <q-btn
-          class="q-ml-md"
+          class="q-ml-md q-mt-md"
           color="primary"
           :label="$t('common.toPanel')"
           icon-right="chevron_right"
