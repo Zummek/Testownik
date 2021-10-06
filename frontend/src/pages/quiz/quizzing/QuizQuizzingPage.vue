@@ -1,8 +1,14 @@
 <template>
   <q-page :padding="$q.screen.gt.xs" class="full-width">
     <q-card v-if="quizzing">
-      <q-card-section horizontal class="quiz-quizzing">
-        <q-card-section class="column full-width">
+      <q-card-section
+        :horizontal="$q.screen.gt.xs"
+        class="quiz-quizzing q-pa-none"
+      >
+        <q-card-section
+          class="column full-width"
+          :class="{ 'q-pa-none': $q.screen.xs }"
+        >
           <transition
             class="quiz-quizzing__transition"
             appear
@@ -12,7 +18,7 @@
             mode="out-in"
           >
             <div
-              class="quiz-quizzing--animated full-width q-pa-md"
+              class="quiz-quizzing--animated full-width q-pa-none"
               :key="quizzing.currentQuestion.question.id"
             >
               <q-card-section>
@@ -45,7 +51,10 @@
           </div>
         </q-card-section>
 
-        <q-card-section class="quiz-quizzing__side-bar">
+        <q-card-section
+          class="quiz-quizzing__side-bar"
+          :class="{ 'full-width': $q.screen.xs }"
+        >
           <side-bar :quizzing="quizzing" :onMainBtnClick="onMainBtnClick" />
         </q-card-section>
       </q-card-section>

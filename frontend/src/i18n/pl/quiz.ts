@@ -12,6 +12,7 @@ export default {
   unavailbleQuestions: 'Niedostępne pytania',
   unavailbleQuestionsInfo:
     'Pytania niedostępne to takie, które jeszcze nie posiadają wskazanej odpowiedzi.',
+  firstSelectAnswer: 'Najpierw wybierz odpowiedź',
   settings: {
     additionalRepetitionsNumberWithWrongAnswers:
       'Dodatkowa liczba powtórzeń przy złej odpowiedzi',

@@ -1,20 +1,59 @@
 <template>
-  <div class="actions-container">
-    <div id="curved-corner-bottomleft" />
-    <div id="curved-corner-topleft" />
-    <q-btn
-      class="mainBtn"
-      :class="{ 'mainBtn--rotate': isRotating }"
-      round
-      :icon="mainBtnIcon"
-      size="22px"
-      transition="slide-right"
-      color="secondary"
-      :disabled="mainBtnDisabled"
-      @click="onMainBtnClick"
-    />
-    <div class="h-line top" :class="{ 'h-line--disabled': mainBtnDisabled }" />
-    <div class="h-line" :class="{ 'h-line--disabled': mainBtnDisabled }" />
+  <div>
+    <div v-if="$q.screen.gt.xs" class="actions-container">
+      <div id="curved-corner-bottomleft" />
+      <div id="curved-corner-topleft" />
+      <div>
+        <q-btn
+          class="mainBtn"
+          :class="{ 'mainBtn--rotate': isRotating }"
+          round
+          :icon="mainBtnIcon"
+          size="22px"
+          transition="slide-right"
+          color="secondary"
+          :disabled="mainBtnDisabled"
+          @click="onMainBtnClick"
+        />
+        <q-tooltip
+          v-if="mainBtnDisabled"
+          transition-hide="fade"
+          transition-duration="500"
+        >
+          {{ $t('quiz.firstSelectAnswer') }}
+        </q-tooltip>
+      </div>
+      <div
+        class="h-line top"
+        :class="{ 'h-line--disabled': mainBtnDisabled }"
+      />
+      <div class="h-line" :class="{ 'h-line--disabled': mainBtnDisabled }" />
+    </div>
+    <div v-else>
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn
+          fab
+          class="mainBtn"
+          :class="{ 'mainBtn--rotate': isRotating }"
+          round
+          :icon="mainBtnIcon"
+          size="22px"
+          transition="slide-right"
+          color="secondary"
+          :disabled="mainBtnDisabled"
+          @click="onMainBtnClick"
+        />
+        <q-tooltip
+          v-if="mainBtnDisabled"
+          anchor="top left"
+          self="top right"
+          transition-hide="fade"
+          transition-duration="500"
+        >
+          {{ $t('quiz.firstSelectAnswer') }}
+        </q-tooltip>
+      </q-page-sticky>
+    </div>
   </div>
 </template>
 
