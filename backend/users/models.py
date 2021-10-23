@@ -29,4 +29,4 @@ def create_user_settings(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_settings(instance, **kwargs):
-    instance.userSettings.save()
+    instance.settings.save()
